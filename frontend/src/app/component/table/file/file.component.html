@@ -1,1 +1,49 @@
-<p>file works!</p>
+<table id="datatable" class="w-full mx-auto table-fixed">
+    <tr>
+        <th *ngFor="let label of labels; let i = index"
+            [ngClass]="{'text-center': label.field === 'action'}"
+            class="font-poppins text-xs text-left bg-colorTheme font-medium   px-6 md:py-3">
+            {{ label.text }}
+        </th>
+    </tr>
+
+    <tr *ngIf=" !data || data.length == 0; else elseBlock"
+        class="bg-grey-100 border-b border-t border-gray-400 transition duration-300 ease-in-out pl-0">
+        <td [attr.colspan]="labels.length"
+            class="text-center font-poppins text-xs text-gray-500 italic md:border-b md:border-l md:border-r md:border-t md:border-gray-400 p-3 md:p-0">
+            No data found.
+        </td>
+    </tr>
+    <ng-template #elseBlock class="field">
+        <tbody>
+            <tr *ngFor="let label of data; let i = index"
+                class="bg-grey-100 border-b border-t border-gray-400 transition duration-300 ease-in-out md:mt-0 even:bg-TableBgColor  ">
+                <td
+                    class="text text-xs text-gray-600 font-poppins font-light px-6 py-2 md:py-1 lg:py-1 xl:py-1 text-justify withData items-center"
+                    *ngFor="let item of labels; let labelIndex = index"
+                    [attr.data]="item.text"
+                    [ngClass]="{
+                'justify-evenly items-center whitespace-normal': item.field === 'action',
+                'text-justify whitespace-normal': item.field === 'date',
+                'whitespace-normal': item.field !== 'action' && item.field !== 'date'
+              }">
+                    <ng-container *ngIf="item.field === 'action'">
+                        <ng-container
+                            *ngTemplateOutlet="actions; context: { $implicit: label }"></ng-container>
+
+                    </ng-container>
+                    <div>
+
+                        {{label[item.field] === 0 || label[item.field] === '0'
+                        ? '0'
+                        : label[item.field] === '' || label[item.field] === null
+                        ? '-'
+                        : label[item.field]
+                        }}
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </ng-template>
+</table>

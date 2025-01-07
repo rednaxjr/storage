@@ -1,1 +1,76 @@
-<p>index works!</p>
+<div class="   h-full w-full">
+    <div
+            class="h-full w-full flex justify-center items-center overflow-y-auto   py-2">
+            <div
+                    class="h-full md:lg:xl:2xl:h-3/4  rounded-10 w-full lg:xl:2xl:w-[80%] bg-white flex   ">
+
+                    <div
+                            class="w-full  lg:xl:2xl:p-8 hidden lg:xl:2xl:block ">
+                            <div class="border-2 h-full">
+                            </div>
+                    </div>
+                    <div
+                            class="relative flex flex-col h-full w-full px-5 py-2   md:w-full lg:xl:2xl:w-[50%]  ">
+                            <div class="h-full   relative   ">
+
+                                    <p
+                                            class="text-[46px]   pt-10 h-auto">
+                                            Sign in
+                                    </p>
+                                    <div class="mt-5 ">
+                                            <label for="email">Email
+                                                    Address</label>
+                                            <div
+                                                    class="relative mt-2  ">
+                                                    <input type="text"
+                                                            [(ngModel)]="email"
+                                                            name="email"
+                                                            class="w-full ">
+                                                    <div
+                                                            class="absolute top-1 left-1  text-gray-600">
+                                                            <mat-icon
+                                                                    aria-hidden="false"
+                                                                    aria-label="Example home icon"
+                                                                   >person</mat-icon>
+                                                    </div>
+                                            </div>
+                                            <div></div>
+                                    </div>
+                                    <div class="flex flex-row">
+                                            <div
+                                                    class="flex flex-col w-full mr-2  ">
+                                                    <label
+                                                            for="password">Password</label>
+                                                    <div
+                                                            class="relative mt-2  ">
+                                                            <input
+                                                            class="w-full  "
+                                                                    type="password"
+                                                                    [(ngModel)]="password"
+                                                                    name="password"
+                                                                   >
+                                                            <div
+                                                                    class="absolute top-1 left-1 text-gray-600">
+                                                                    <mat-icon
+                                                                    
+                                                                            aria-hidden="false"
+                                                                            aria-label="Example home icon"
+                                                                            fontIcon="lock"></mat-icon>
+                                                            </div>
+                                                    </div>
+                                            </div>
+                                    </div>
+
+                                    <!-- <p
+                                            class="text-end text-sm  text-blue-700 pt-5 cursor-pointer underline">Forgot
+                                            password?</p> -->
+
+                                    <button type="submit"
+                                            class="   text-white bg-green-600 mt-2 py-3 px-12 rounded-[8px] m-auto w-full"
+                                            (click)="submit()">Submit</button>
+                                  
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
