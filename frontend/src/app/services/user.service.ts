@@ -8,7 +8,8 @@ import { HttpHeaders, HttpClient } from "@angular/common/http";
 })
 export class UserService {
 
-  url = environment.url;
+  // url = environment.url;
+  private url= 'http://localhost:3000/api/user';
   // header = environment.headers;
   
   headers = {
@@ -20,39 +21,10 @@ export class UserService {
 
   getAllUsers() {
     return this.httpClient.get(this.url + "/")
-  }
-  registerAccount(data: any) {
-    return this.httpClient.post(this.url + "/insertData", data, this.headers)
-  }
-  updateUser(data: any) {
-    return this.httpClient.post(this.url + "/updateById", data, this.headers)
-  }
-  
-  deleteAccount(data: any) {
-    return this.httpClient.post(this.url + "/deleteById/",data)
-  }
-  getUserTimeLogById(data: any) {
-    return this.httpClient.post(this.url + "/getUserTimeLogById/",data)
-  }
-  getUserTodayLogsById(data: any) {
-    return this.httpClient.post(this.url + "/getUserTodayLogsById/",data)
-  }
-  getTLByDate(data: any) {
-    return this.httpClient.post(this.url + "/getTLByDate/",data)
-  }
+  } 
 
-  getReportsByDate(data: any) {
-    return this.httpClient.post(this.url + "/getReportsByDate/",data)
+  uploadFile(data:any){ 
+    return this.httpClient.post<any>(this.url + "/uploadFile", data, this.headers);
   }
-  
-  
-  // loginAccount(data:any){
-  //   return this.httpClient.post(this.url + "/loginAccount/",data, this.headers)
-  // }
  
-  // (){
-  //   return this.httpClient.get()
-  // }
-
-
 }

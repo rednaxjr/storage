@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const morgan = require('morgan'); 
-router.use(express.json());
-router.use(express.urlencoded({ extended: false })); 
+ 
 router.use(morgan('dev'));
 
 

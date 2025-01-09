@@ -5,6 +5,8 @@ import { IndexComponent } from './views/index/index.component';
  
 import { AuthGuard } from './services/auth.guard';
 import { DashboardComponent } from './views/user/dashboard/dashboard.component';
+import { FilesComponent } from './views/user/files/files.component';
+
 export const routes: Routes = [
 
     {
@@ -20,7 +22,8 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
             {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: {title: 'Dashboard'}}, 
-
+            {path: 'files', component: FilesComponent, canActivate: [AuthGuard], data: {title: 'Files'}}, 
+            
         ],
     },
     { path: '', redirectTo: '/', pathMatch: 'full' },

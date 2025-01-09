@@ -46,7 +46,8 @@ export class UserLayoutComponent {
 
   sideBarRoutes = [
     { path: 'dashboard', name: "Dashboard", icon: "dashboard" },
-   
+    { path: 'files', name: "Files", icon: "description" },
+    
     
   ]
 

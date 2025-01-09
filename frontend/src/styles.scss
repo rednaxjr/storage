@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
 html,
 body {
     height: 100%;
@@ -17,7 +18,7 @@ body {
     font-size: 14px;
 
 
-} 
+}
 
 .indexContainer {
     background: url('./app/assets/img/background.jpg');
@@ -30,15 +31,14 @@ body {
     overflow: auto;
 }
 
+ 
+.mat-mdc-dialog-surface {
+    border-radius: 8px !important;
+    
+}
 
-.custom-container .mat-dialog-container {
-    border-radius: 0px !important;
- }
- .mat-mdc-dialog-surface{
-    border-radius:  8px !important;
- }
- .mat-body-large p, .mat-typography .mat-body-large p, .mat-typography p{
-    margin:0px;
- }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-body-large p,
+.mat-typography .mat-body-large p,
+.mat-typography p {
+    margin: 0px;
+}

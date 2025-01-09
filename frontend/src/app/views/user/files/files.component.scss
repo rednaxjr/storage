@@ -1,0 +1,12 @@
+input:not([type]),
+input[type="text"]{
+  font-size: 14px;
+  padding:5px 5px 5px;
+  border:1px solid  rgb(75 85 99);
+  border-radius: 8px;
+   
+}
+
+.upload-button{
+  width:150px;
+}
