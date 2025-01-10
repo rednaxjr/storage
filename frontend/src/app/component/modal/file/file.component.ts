@@ -13,6 +13,7 @@ import { MatIconModule, MatIcon } from '@angular/material/icon';
 export class FileComponent {
   selectedFiles:File[]=[];
   uploadedFiles:any=[];
+  PreviewImage:string="../../../assets/img/img_placeholder.jpg";
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<FileComponent>,

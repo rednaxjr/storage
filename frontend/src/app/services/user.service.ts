@@ -23,8 +23,11 @@ export class UserService {
     return this.httpClient.get(this.url + "/")
   } 
 
-  uploadFile(data:any){ 
-    return this.httpClient.post<any>(this.url + "/uploadFile", data, this.headers);
+  uploadFile(formData:FormData){ 
+    return this.httpClient.post<any>(this.url + "/uploadFile", formData );
+  }
+  uploadFile2(formData:FormData){ 
+    return this.httpClient.post<any>(this.url + "/uploadFile2", formData );
   }
  
 }

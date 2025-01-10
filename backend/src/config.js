@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const morgan = require('morgan'); 
- 
+const morgan = require('morgan');  
+router.use(express.json({ limit: '50mb' }));  
+router.use(express.urlencoded({ extended: true, limit: '50mb' }));  
+
 router.use(morgan('dev'));
 
 

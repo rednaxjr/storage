@@ -1,38 +1,42 @@
 <!--- Header -->
 <div
-    class="w-full h-10 bg-green-600 flex justify-between items-center   space-x-4 px-8 text-white">
+    class="w-full h-10 bg-green-600 flex justify-between items-center space-x-4 px-8 text-white">
     <div class="w-full"></div>
     <div class="w-full flex justify-center text-lg">{{data.title}}</div>
     <div class="w-full flex justify-end">
-        <button class="flex items-center text-center  "
-            (click)="dialogRef.close()">
-            <mat-icon
-                aria-hidden="false"
-                aria-label="close">close</mat-icon></button>
+        <button class="flex items-center text-center"
+            (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon aria-label="Close">close</mat-icon>
+        </button>
     </div>
 </div>
 
-<!---Body--->
-<mat-dialog-content class="  bg-gray-100 ">
-    <div class=" h-[750px] ">
-        <div
-            class="h-full w-full flex flex-col space-y-10 justify-center items-center">
-            <div>
-                <button  (click)="file.click()"
-                    class="upload-button border py-4 text-2xl border-gray-400">
-                    Single Upload
-                </button>
-            </div>
-            <div>
-                <button  (click)="file2.click()"
-                    class="upload-button border py-4 text-2xl  border-gray-400">
-                    Multiple Upload
-                </button>
-            </div>
-        </div>
-        
+<!--- Body -->
+<div class="h-full bg-gray-400">
+    <div class="h-[80%] w-full flex justify-center items-center text-center"
+        (click)="file2.click()">
+        <img src="../../../assets/img/img_placeholder.jpg" alt class="h-full w-full " />
+        <!-- <img src="../../../assets/img/img_placeholder.jpg" class="h-full w-full"/> -->
+        <p class="flex flex-col">
+           
+            <span>
+                <!-- <mat-icon class="text-[5rem] text-blue-500" aria-label="upload">
+                    upload
+                </mat-icon> -->
+              
+            </span>
+            <span>
 
+            </span>
+        </p>
     </div>
-    <input type="file"  #file  class="hidden">
-    <input type="file"  #file2   multiple="multiple" class="hidden" (change)="onFileSelected($event)">
-</mat-dialog-content>
+    <!-- <div class="flex justify-center mt-4">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="file2.click()">
+            Select Files
+        </button>
+    </div> -->
+</div>
+
+<!--- File Inputs -->
+<input type="file" #file2 multiple="multiple" class="hidden"
+    (change)="onFileSelected($event)">

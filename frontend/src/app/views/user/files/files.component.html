@@ -1,4 +1,4 @@
-<h1>Files</h1>
+<h1>Files</h1> 
 
 <div class="w-full flex justify-between space-x-3">
     <div>
@@ -6,36 +6,39 @@
         <input type="text" class="border">
     </div>
     <div class="flex space-x-3">
-        <div>
-            <button  (click)="file.click()"
+        <!-- <div>
+            <button  (click)="[file.click(),isSingle=1]"
                 class="upload-button border py-4 text-md border-gray-400">
                 Single Upload
             </button>
         </div>
         <div>
-            <button  (click)="file2.click()"
+            <button  (click)="[file.click(), isSingle=0]"
                 class="upload-button border py-4 text-md border-gray-400">
                 Multiple Upload
             </button>
         </div>
         <button
             class="flex items-center justify-center border px-4 py-2 shadow-md"
-            (click)="uploadFiles()" [disabled]="!selectedFiles.length">
+            (click)="uploadFiles()"  >
             <p class="text-sm ">
                 <span>Upload</span>
             </p>
-        </button>
-        <!-- <button
+        </button> -->
+        <button
             class="flex items-center justify-center border px-4 py-2 shadow-md"
             (click)="openModal()">
             <p class="text-sm ">
                 <span>Upload</span>
             </p>
-        </button> -->
+        </button>
     </div>
-</div>
-<input type="file"  #file  class="hidden">
-<input type="file"  #file2   multiple="multiple" class="hidden" (change)="onFileSelected($event)">
+</div> 
+
+<input type="file"  #file   multiple class="hidden" (change)="onFilesSelected2($event)">
+
+
+
 <div class="bg-white w-auto m-auto mt-2 md:lg:xl:px-0 pb-10">
     <div class="overflow-hidden rounded-5 border border-colorTheme2">
         <!-- <app-table [labels]="table_headers" [data]="reports"

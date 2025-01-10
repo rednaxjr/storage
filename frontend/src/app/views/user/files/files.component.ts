@@ -18,7 +18,9 @@ import { UserService } from '../../../services/user.service';
   styleUrl: './files.component.scss'
 })
 export class FilesComponent implements OnInit {
- selectedFiles:File[]= [];
+  selectedFiles: File[] = [];
+  type: any = "";
+  isSingle: any;
   constructor(
     private dialog: MatDialog,
     public userService: UserService,
@@ -33,6 +35,7 @@ export class FilesComponent implements OnInit {
 
     var date: any = [];
     var logs: any = [];
+
     // const dialogConfig = new MatDialogConfig();
 
     // Configure the dialog options
@@ -45,7 +48,7 @@ export class FilesComponent implements OnInit {
 
     let dialogRef = this.dialog.open(FileComponent, {
       panelClass: 'custom-container',
-      height: 'auto',
+      height: '100%',
       width: '80%',
       autoFocus: true,
       disableClose: true,
@@ -57,9 +60,41 @@ export class FilesComponent implements OnInit {
     });
 
   }
-  onFileSelected(event: any) {
-     this.selectedFiles = Array.from(event.target.files);
+  // onFilesSelected(event: any): void {
+  //   this.selectedFiles = Array.from(event.target.files);
+  //   console.log('Selected files:', this.selectedFiles);
+  // }
+  onFilesSelected2(event: any) {
+   
+    this.selectedFiles = Array.from(event.target.files);
+    if (this.selectedFiles.length === 0) return;
+    console.log(this.selectedFiles.length)
+    if (this.isSingle == 1) { 
+      if (this.selectedFiles.length != 1) {
+        console.log("invalid number of files")
+      }  
+    }else{
+      if (this.selectedFiles.length <= 1 ) {
+        console.log("invalid number of files")
+      } 
+    }
+
   }
+
+  async uploadFiles() {
+    if (this.selectedFiles.length === 0) return;
+    const formData = new FormData;
+
+    this.selectedFiles.forEach(file => {
+      formData.append('files', file);
+    });
+    formData.append('isSingle', this.isSingle);
+    this.userService.uploadFile(formData).subscribe((res: any) => {
+      console.log(res.data)
+
+    })
+  }
+
   // async uploadFiles() {
   //   if (this.selectedFiles.length === 0) return;
   //   const formData = new FormData;
@@ -68,31 +103,14 @@ export class FilesComponent implements OnInit {
   //     formData.append('files', file);
   //   });
 
-  //   const data = {
-  //     files: this.selectedFiles,
-  //   }
-
-  //   this.userService.uploadFile(data).subscribe((res: any) => {
+  //   console.log(formData)
+  //   this.userService.uploadFile2(formData).subscribe((res: any) => {
   //     console.log(res.data)
 
+  //   }, (error) => {
+  //     console.log(error);
   //   })
+
   // }
-
-  async uploadFiles() {
-    if (this.selectedFiles.length === 0) return;
-    const formData = new FormData; 
-    this.selectedFiles.forEach(file => {
-      formData.append('files', file);
-    });
-     
-    console.log(formData)
-    this.userService.uploadFile(formData).subscribe((res: any) => {
-      console.log(res.data)
-
-    }, (error) => {
-      console.log(error);
-    })
-
-  }
 
 }

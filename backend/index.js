@@ -5,7 +5,7 @@ const path =require('path')
 const app = express();
 var cors = require('cors');
 require('dotenv').config();
-app.use(config);
+
 app.use(cors())
 app.use("/api", routes, () => { throw 'server error' })
 // app.use("/", express.static(path.join(__dirname, "./src/public/frontend-app/browser")) );
@@ -32,5 +32,6 @@ app.use((err, req, res, next) => {
 
 
 app.listen(process.env.PORT, () => {
+  app.use(config);
   console.log("Running in Port:" + process.env.PORT);
 })
