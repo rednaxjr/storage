@@ -2,8 +2,9 @@ const connection = require('../../dbconfig/config')
 const crypto = require('../security/crypto')
 const jwt = require('jsonwebtoken');
 // list of controllers　
-const loginAccount = (req, res) => {
+const loginAccount = (req, res) => { 
     const data = req.body;
+    console.log(data)
     var query = "Select * from user where username=?";
     connection.query(query, [data.username], (err, result) => {
         if (!err) {

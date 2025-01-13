@@ -1,3 +1,20 @@
 .upload-button{
     width:350px;
 }
+// background-image:  url(/assets/images/some-image.png) no-repeat center top;
+
+.dropdownImage{
+    
+background-image:  url("../../../assets/img/img_placeholder.jpg");
+background-repeat: no-repeat;
+background-position: center-top;
+ 
+
+}
+.uploadImage{
+    mat-icon{
+        height: auto;
+        width: auto;
+    }
+   
+}

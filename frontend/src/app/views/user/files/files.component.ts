@@ -21,6 +21,15 @@ export class FilesComponent implements OnInit {
   selectedFiles: File[] = [];
   type: any = "";
   isSingle: any;
+  file_name: any;
+
+  table_headers = [
+    { text: "Name", field: "name" },
+    { text: "Size", field: "size" },
+    { text: "Type", field: "type" },
+    { text: "Action", field: "action" },
+  ];
+  files_data: any = [];
   constructor(
     private dialog: MatDialog,
     public userService: UserService,
@@ -28,8 +37,18 @@ export class FilesComponent implements OnInit {
 
   }
   ngOnInit(): void {
-
+    this.getAllFiles();
   }
+  async getAllFiles() {
+    this.files_data = [];
+    this.userService.getUploadedFiles().subscribe((res: any) => {
+
+      this.files_data = res.files;
+      console.log(res)
+
+    })
+  }
+
   openModal() {
     const title = "Upload"
 
@@ -48,15 +67,19 @@ export class FilesComponent implements OnInit {
 
     let dialogRef = this.dialog.open(FileComponent, {
       panelClass: 'custom-container',
-      height: '100%',
+      height: '75%',
       width: '80%',
       autoFocus: true,
       disableClose: true,
       data: { title: title, date: date, logs: logs }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(res => {
+
+      if (res.event == "Add File") {
+        this.getAllFiles();
+        alert("file added")
+      }
     });
 
   }
@@ -65,18 +88,18 @@ export class FilesComponent implements OnInit {
   //   console.log('Selected files:', this.selectedFiles);
   // }
   onFilesSelected2(event: any) {
-   
+
     this.selectedFiles = Array.from(event.target.files);
     if (this.selectedFiles.length === 0) return;
     console.log(this.selectedFiles.length)
-    if (this.isSingle == 1) { 
+    if (this.isSingle == 1) {
       if (this.selectedFiles.length != 1) {
         console.log("invalid number of files")
-      }  
-    }else{
-      if (this.selectedFiles.length <= 1 ) {
+      }
+    } else {
+      if (this.selectedFiles.length <= 1) {
         console.log("invalid number of files")
-      } 
+      }
     }
 
   }
@@ -112,5 +135,37 @@ export class FilesComponent implements OnInit {
   //   })
 
   // }
+  async deleteFile(data: any) {
+    const datas = {
+      name: data.name,
+    }
 
+    if (confirm("Press a button!") == true) {
+      this.userService.deleteFile(datas).subscribe((res: any) => {
+        console.log(res.data)
+        alert("File Deleted")
+        this.getAllFiles();
+      })
+    } else {
+      console.log("cancel")
+    }
+  }
+
+  view(data: any) {
+    const datas={
+      name:data.name
+    }
+    this.userService.viewFile(datas).subscribe((res: any) => {
+       if(data.type == "video/mp4"){
+        const videoURL = `http://localhost:3000/viewFile`; 
+ 
+      const videoWindow = window.open(videoURL, '_blank');
+       }else{
+        const fileURL = window.URL.createObjectURL(res);
+        window.open(fileURL);
+        // window.open()
+       }
+    
+    })
+  }
 }

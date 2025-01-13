@@ -1,4 +1,4 @@
-<h1>Files</h1> 
+<h1>Files</h1>
 
 <div class="w-full flex justify-between space-x-3">
     <div>
@@ -33,37 +33,38 @@
             </p>
         </button>
     </div>
-</div> 
+</div>
 
-<input type="file"  #file   multiple class="hidden" (change)="onFilesSelected2($event)">
-
-
+<input type="file" #file multiple class="hidden"
+    (change)="onFilesSelected2($event)">
 
 <div class="bg-white w-auto m-auto mt-2 md:lg:xl:px-0 pb-10">
     <div class="overflow-hidden rounded-5 border border-colorTheme2">
-        <!-- <app-table [labels]="table_headers" [data]="reports"
+        <app-table [labels]="table_headers" [data]="files_data"
             class="md:mt-0 lg:mt-0 xl:mt-0">
             <div
                 class="grid flex-wrap space-x-1 space-y-1 md:grid sm:flex xl:flex lg:flex justify-start">
                 <ng-container>
                     <ng-template #actions let-default let-index="index">
-                        <div class="flex justify-center text-center items-center py-2">
+                        <div
+                            class="flex justify-center text-center items-center py-2 space-x-3">
                             <button
-                                
-                                 class="flex items-center text-center h-auto font-medium border border-gray-400 text-sm rounded-5 px-2 py-1 bg-white">
-                                <mat-icon [inline]="true"
-                                    *ngIf="!default.isOpen">visibility</mat-icon>
-                                <mat-icon [inline]="true"
-                                    *ngIf="default.isOpen">visibility_off</mat-icon>
+                                class="flex items-center text-center h-auto font-medium border border-gray-400 text-sm rounded-5 px-2 py-1 bg-white">
+                                <mat-icon [inline]="true" (click)="view(default);">visibility</mat-icon>
+
                             </button>
-                          
-                           
+                            <button
+                                class="flex items-center text-center h-auto font-medium border border-gray-400 text-sm rounded-5 px-2 py-1 bg-white">
+                                <mat-icon [inline]="true"
+                                    (click)="deleteFile(default)">delete</mat-icon>
+                            </button>
+
                         </div>
                     </ng-template>
                 </ng-container>
-              
+
             </div>
-        </app-table> -->
+        </app-table>
     </div>
 </div>
 <div class="h-20"></div>

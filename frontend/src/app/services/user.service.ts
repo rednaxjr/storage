@@ -25,9 +25,21 @@ export class UserService {
 
   uploadFile(formData:FormData){ 
     return this.httpClient.post<any>(this.url + "/uploadFile", formData );
-  }
-  uploadFile2(formData:FormData){ 
-    return this.httpClient.post<any>(this.url + "/uploadFile2", formData );
-  }
+  } 
+  getUploadedFiles(){ 
+    return this.httpClient.get<any>(this.url + "/getAllFiles" );
+  } 
+  
+  deleteFile(data:any){ 
+    return this.httpClient.post<any>(this.url + "/deleteFile" , data, this.headers);
+  } 
+  
+  viewFile(data:any){ 
+    return this.httpClient.post<any>(this.url + "/viewFile"  , data, {
+      // headers: this.headers,
+      headers: new HttpHeaders().set('Content-Type', "application/json"),
+      responseType: 'blob' as 'json'  
+    });
+  } 
  
 }

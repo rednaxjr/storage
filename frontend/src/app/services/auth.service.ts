@@ -57,7 +57,7 @@ export class AuthService {
         }
         if (this.jwtHelper.isTokenExpired(token)) {
             alert("session expired")
-            this.logout(); // Automatically log out if the token is expired
+            this.logout();  
             return false;
         }
         return true;

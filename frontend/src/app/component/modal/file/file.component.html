@@ -12,31 +12,48 @@
 </div>
 
 <!--- Body -->
-<div class="h-full bg-gray-400">
-    <div class="h-[80%] w-full flex justify-center items-center text-center"
+<mat-dialog-content class="mat-typography h-full bg-gray-300">
+
+    <div *ngIf=" selectedFiles.length == 0"
+        class=" h-full overflow-auto  w-full uploadImage hover:opacity-80 hover:text-opacity-80 flex justify-center items-center flex-col cursor-pointer"
         (click)="file2.click()">
-        <img src="../../../assets/img/img_placeholder.jpg" alt class="h-full w-full " />
-        <!-- <img src="../../../assets/img/img_placeholder.jpg" class="h-full w-full"/> -->
-        <p class="flex flex-col">
-           
-            <span>
-                <!-- <mat-icon class="text-[5rem] text-blue-500" aria-label="upload">
-                    upload
-                </mat-icon> -->
-              
-            </span>
-            <span>
-
-            </span>
-        </p>
+        <mat-icon class="text-[250px] overflow-auto h-auto w-auto" font
+            aria-label="download">
+            download
+        </mat-icon>
+        <p>Upload Image</p> 
     </div>
-    <!-- <div class="flex justify-center mt-4">
-        <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="file2.click()">
-            Select Files
-        </button>
-    </div> -->
-</div>
+    <!-- <div class="thumbnail flex w-full space-x-5" >
+        <div class="h-[75px] w-[75px] border">
 
-<!--- File Inputs -->
-<input type="file" #file2 multiple="multiple" class="hidden"
-    (change)="onFileSelected($event)">
+        </div>
+        <div class="flex justify-start items-center pl-5">
+            <ul class="list-disc">
+                <li> name </li>
+                <li> type </li>
+                <li> size </li>
+            </ul>
+        </div>
+    </div> -->
+    <div class="thumbnail flex w-full space-x-5  mt-2"
+        *ngFor="let label of uploadedFiles; let i = index">
+        <div class="h-[75px] w-[100px] border">
+
+        </div>
+        <div class="w-full flex justify-start items-center  ">
+            <ul class="list-disc ">
+                <li> {{label.name}} </li>
+                <li>{{label.type}} </li>
+                <li> {{label.size}} </li>
+            </ul>
+        </div>
+    </div>
+    <input type="file" #file2 multiple="multiple" class="hidden"
+        (change)="onFileSelected($event)">
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [disabled]="selectedFiles.length == 0"
+        (click)="uploadFiles()">Upload</button>
+</mat-dialog-actions>
