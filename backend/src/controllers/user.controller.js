@@ -40,10 +40,17 @@ const getAllFiles = (req, res) => {
             const filePath = path.join(folderPath, file);
             const stats = fs.statSync(filePath);
             const mimeType = mime.lookup(file);
+
+            var d = new Date(stats.mtime);
+            time = d.toLocaleString('default', { hour: 'numeric', minute: 'numeric', hour12: true })
+            date = d.toLocaleString('default', { year: 'numeric', day: '2-digit', month: 'long' })
+            console.log(stats)
             return {
                 name: file,
                 size: stats.size,
                 type: mimeType,
+                time: time,
+                date: date,
             };
         });
         return res.json({
@@ -123,7 +130,6 @@ const uploadFile = async (req, res) => {
     });
 }
 const deleteFile = async (req, res) => {
-
     const data = req.body;
     console.log(data)
     if (!data) {
@@ -131,7 +137,6 @@ const deleteFile = async (req, res) => {
     }
     const folderPath = path.join(process.cwd(), 'uploaded_files');
     const filePath = path.join(folderPath, data.name);
-
     fs.exists(filePath, (exists) => {
         if (!exists) {
             return res.status(404).json({ error: 'File not found' });
@@ -145,18 +150,17 @@ const deleteFile = async (req, res) => {
     });
 }
 const viewFile = (req, res) => {
-
     const folderPath = path.join(process.cwd(), 'uploaded_files');
-    const data = req.body; 
-    const filePath = path.join(folderPath, data.name); 
+    const data = req.body;
+    const filePath = path.join(folderPath, data.name);
     if (!fs.existsSync(filePath)) {
         return res.status(404).json({ error: 'File not found' });
     }
-    const mimeType = mime.lookup(filePath) || 'application/octet-stream'; 
+    const mimeType = mime.lookup(filePath) || 'application/octet-stream';
     res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(data.name)}"`);
     res.setHeader('Content-Type', mimeType);
     const stream = fs.createReadStream(filePath);
-    stream.pipe(res); 
+    stream.pipe(res);
     stream.on('error', (error) => {
         console.error('Stream error:', error);
         res.status(500).json({ error: 'Error streaming the file' });

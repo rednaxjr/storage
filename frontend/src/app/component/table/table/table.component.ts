@@ -24,8 +24,17 @@ export class TableComponent implements OnInit {
   ) { 
   }
   ngOnInit(): void {
-    // throw new Error('Method not implemented.');
-
+   
   }
+  async sort(data: { field: string }, index: number) { 
+    const isAscending = (this.labels[index].sort = !this.labels[index].sort); 
+    this.data.sort((a, b) => {
+      const comparison = a[data.field] < b[data.field] ? -1 : a[data.field] > b[data.field] ? 1 : 0;
+      return isAscending ? comparison : -comparison;
+    });
+  
+    console.log(this.labels[index]);
+  }
+
 
 }

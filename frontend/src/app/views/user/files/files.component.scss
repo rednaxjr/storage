@@ -1,12 +1,37 @@
 input:not([type]),
-input[type="text"]{
+input[type="text"],
+input[type="date"] {
   font-size: 14px;
-  padding:5px 5px 5px;
-  border:1px solid  rgb(75 85 99);
+  padding: 5px 5px 5px;
+  border: 1px solid rgb(75 85 99);
   border-radius: 8px;
-   
+  width:160px;
+
 }
 
-.upload-button{
-  width:150px;
+.upload-button {
+  width: 150px;
+}
+
+.input-container input {
+  font-size: 14px;
+  padding: 5px 5px 5px;
+  border-radius: 8px;
+  position: relative;
+ 
+  border: 1px solid rgb(75 85 99);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+  
 }

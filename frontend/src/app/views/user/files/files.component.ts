@@ -13,7 +13,7 @@ import { UserService } from '../../../services/user.service';
 @Component({
   selector: 'app-files',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule, MatTableModule, MatPaginatorModule, MatIconModule, TableComponent, MatDialogModule],
+  imports: [RouterModule, CommonModule, FormsModule, MatTableModule, MatPaginatorModule, MatIconModule, TableComponent, MatDialogModule, FileComponent],
   templateUrl: './files.component.html',
   styleUrl: './files.component.scss'
 })
@@ -22,14 +22,17 @@ export class FilesComponent implements OnInit {
   type: any = "";
   isSingle: any;
   file_name: any;
-
+  searchFile: string = "";
+  date: any = null;
+  date_preview: any = null;
   table_headers = [
-    { text: "Name", field: "name" },
-    { text: "Size", field: "size" },
-    { text: "Type", field: "type" },
-    { text: "Action", field: "action" },
+
+    { text: "Name", field: "name", sort: true },
+    { text: "Date Uploaded", field: "date", sort: true },
+    { text: "Action", field: "action", sort: true },
   ];
   files_data: any = [];
+  files_data_duplicate: any = [];
   constructor(
     private dialog: MatDialog,
     public userService: UserService,
@@ -42,29 +45,15 @@ export class FilesComponent implements OnInit {
   async getAllFiles() {
     this.files_data = [];
     this.userService.getUploadedFiles().subscribe((res: any) => {
-
       this.files_data = res.files;
-      console.log(res)
-
+      this.files_data_duplicate = this.files_data;
     })
   }
 
   openModal() {
     const title = "Upload"
-
     var date: any = [];
     var logs: any = [];
-
-    // const dialogConfig = new MatDialogConfig();
-
-    // Configure the dialog options
-    // dialogConfig.disableClose = true; // Prevents closing the dialog by clicking outside
-    // dialogConfig.autoFocus = false;   // Disable autofocus to manually control focus
-    // dialogConfig.width = '80%';       // Set the width of the dialog
-    // dialogConfig.data = { id: 123, name: 'Angular' }; // Pass data to the dialog component
-    //  dialogConfig.autoFocus = 'input[name="testName"]'; //Pass autoFoucs field
-    // this.dialog.open(FileComponent, dialogConfig);
-
     let dialogRef = this.dialog.open(FileComponent, {
       panelClass: 'custom-container',
       height: '75%',
@@ -83,64 +72,13 @@ export class FilesComponent implements OnInit {
     });
 
   }
-  // onFilesSelected(event: any): void {
-  //   this.selectedFiles = Array.from(event.target.files);
-  //   console.log('Selected files:', this.selectedFiles);
-  // }
-  onFilesSelected2(event: any) {
 
-    this.selectedFiles = Array.from(event.target.files);
-    if (this.selectedFiles.length === 0) return;
-    console.log(this.selectedFiles.length)
-    if (this.isSingle == 1) {
-      if (this.selectedFiles.length != 1) {
-        console.log("invalid number of files")
-      }
-    } else {
-      if (this.selectedFiles.length <= 1) {
-        console.log("invalid number of files")
-      }
-    }
 
-  }
-
-  async uploadFiles() {
-    if (this.selectedFiles.length === 0) return;
-    const formData = new FormData;
-
-    this.selectedFiles.forEach(file => {
-      formData.append('files', file);
-    });
-    formData.append('isSingle', this.isSingle);
-    this.userService.uploadFile(formData).subscribe((res: any) => {
-      console.log(res.data)
-
-    })
-  }
-
-  // async uploadFiles() {
-  //   if (this.selectedFiles.length === 0) return;
-  //   const formData = new FormData;
-
-  //   this.selectedFiles.forEach(file => {
-  //     formData.append('files', file);
-  //   });
-
-  //   console.log(formData)
-  //   this.userService.uploadFile2(formData).subscribe((res: any) => {
-  //     console.log(res.data)
-
-  //   }, (error) => {
-  //     console.log(error);
-  //   })
-
-  // }
   async deleteFile(data: any) {
     const datas = {
       name: data.name,
     }
-
-    if (confirm("Press a button!") == true) {
+    if (confirm("are you sure you want to delete this?") == true) {
       this.userService.deleteFile(datas).subscribe((res: any) => {
         console.log(res.data)
         alert("File Deleted")
@@ -152,20 +90,63 @@ export class FilesComponent implements OnInit {
   }
 
   view(data: any) {
-    const datas={
-      name:data.name
+    const datas = {
+      name: data.name
     }
     this.userService.viewFile(datas).subscribe((res: any) => {
-       if(data.type == "video/mp4"){
-        const videoURL = `http://localhost:3000/viewFile`; 
- 
-      const videoWindow = window.open(videoURL, '_blank');
-       }else{
+      if (data.type == "video/mp4") {
+        const videoURL = `http://localhost:3000/viewFile`;
+        const videoWindow = window.open(videoURL, '_blank');
+      } else {
         const fileURL = window.URL.createObjectURL(res);
         window.open(fileURL);
         // window.open()
-       }
-    
+      }
+
     })
   }
-}
+  search(data: any) {
+    this.searchFile = data.target.value;
+    this.filter()
+  }
+  DateFilter(data: any) {
+    this.date_preview = data.target.value;
+    this.date = new Date(data.target.value).toLocaleString('default', {
+      year: 'numeric',
+      day: '2-digit',
+      month: 'long',
+    });
+    console.log(this.date)
+    this.filter();
+  }
+  filter() {
+    this.files_data = this.files_data_duplicate;
+    if (this.searchFile && !this.date) {
+      this.files_data = this.files_data.filter(
+        (data: any) =>
+          data.name.toLowerCase().indexOf(this.searchFile.toLowerCase()) !== -1
+      );
+    } else if (this.searchFile && this.date) {
+      this.files_data = this.files_data.filter(
+        (data: any) =>
+          data.name.toLowerCase().indexOf(this.searchFile.toLowerCase()) !== -1
+          && data.date === this.date
+      );
+    } else if (!this.searchFile && this.date) {
+      this.files_data = this.files_data.filter(
+        (data: any) =>
+          data.date === this.date
+      );
+    }
+    
+  }
+  clearDate(): void {
+    this.date = null; // Clear the date value
+    this.date_preview = null;
+    this.filter(); // Reapply filters
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+} 

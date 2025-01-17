@@ -1,20 +1,42 @@
-.upload-button{
-    width:350px;
+.upload-button {
+    width: 350px;
 }
+
 // background-image:  url(/assets/images/some-image.png) no-repeat center top;
 
-.dropdownImage{
-    
-background-image:  url("../../../assets/img/img_placeholder.jpg");
-background-repeat: no-repeat;
-background-position: center-top;
- 
+.dropdownImage {
+
+    background-image: url("../../../assets/img/img_placeholder.jpg");
+    background-repeat: no-repeat;
+    background-position: center-top;
+
 
 }
-.uploadImage{
-    mat-icon{
+
+.uploadImage {
+    mat-icon {
         height: auto;
         width: auto;
     }
-   
+
+}
+
+.progress-cont {
+    height: 7px;
+    width: 100%;
+    border-radius: 4px;
+    background-color: #d0d0d0;
+    position: relative;
+
+    .progress {
+        width: 0;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        border-radius: 4px;
+        background-color: #4c97cb;
+        transition: 0.5s all;
+    }
 }

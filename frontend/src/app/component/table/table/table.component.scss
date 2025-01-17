@@ -69,4 +69,13 @@
   /* bottom-right border-radius */
   table tr:last-child td:last-child {
     border-bottom-right-radius: 5px !important;
+    
+  }
+  table th:last-child{
+    border:none;
+
+  }
+  table th{
+    border-right:1px solid #eee;
+    
   }
