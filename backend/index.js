@@ -1,33 +1,45 @@
-var express = require('express');
-var config = require('./src/config');
-var routes = require('./src/routes'); 
-const path =require('path')
-const app = express();
-var cors = require('cors');
+const express = require('express');
+const config = require('./src/config');
+const routes = require('./src/routes');
+const path = require('path');
+const cors = require('cors');
 require('dotenv').config();
+const http = require('http');
+const { Server } = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+// Middleware for configuration and CORS
 app.use(config);
-app.use(cors())
-app.use("/api", routes, () => { throw 'server error' })
-// app.use("/", express.static(path.join(__dirname, "./src/public/frontend-app/browser")) );
+app.use(cors());
 
-// app.get('/*', (req, res)=>{
-//     res.sendFile(path.join(__dirname, "./src/public/frontend-app/browser/index.html"));
-// });
-
-app.get("/*",);
-app.get('/*', (req, res)=>{
-    res.sendFile('./src/views/index.html', { root: __dirname });
+// Inject `io` into requests for real-time communication
+app.use((req, res, next) => {
+  req.io = io;
+  next();
 });
 
+// Static file serving
+app.use('/static', express.static(path.join(__dirname, 'src/public')));
 
-app.use((err, req, res, next) => { 
+// Routes
+app.use('/api', routes);
+
+// Frontend entry point
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/views/index.html'));
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   console.error(err.message, err.stack);
-  res.status(statusCode).json({ 'message': err.message });
-  return;
-}); 
+  res.status(statusCode).json({ message: err.message });
+});
 
-app.listen(process.env.PORT, () => {
-
-  console.log("Running in Port:" + process.env.PORT);
-})
+// Start the server
+server.listen(process.env.PORT, () => {
+  console.log(`Server running on port: ${process.env.PORT}`);
+});

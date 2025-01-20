@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
+
 // import { authInterceptor } from './_helpers/auth.interceptor'; // Adjust path as necessary
 import { AuthService } from './services/auth.service';
 

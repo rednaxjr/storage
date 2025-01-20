@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TableComponent } from '../../../component/table/table/table.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -9,11 +9,11 @@ import { MatTableModule, MatTableDataSource, } from '@angular/material/table';
 import { FileComponent } from '../../../component/modal/file/file.component';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { UserService } from '../../../services/user.service';
-
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 @Component({
   selector: 'app-files',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule, MatTableModule, MatPaginatorModule, MatIconModule, TableComponent, MatDialogModule, FileComponent],
+  imports: [RouterModule, CommonModule, FormsModule, MatTableModule, MatPaginatorModule, MatIconModule, TableComponent, MatDialogModule, FileComponent, MatButtonToggleModule],
   templateUrl: './files.component.html',
   styleUrl: './files.component.scss'
 })
@@ -25,6 +25,7 @@ export class FilesComponent implements OnInit {
   searchFile: string = "";
   date: any = null;
   date_preview: any = null;
+  tov: any = "list"
   table_headers = [
 
     { text: "Name", field: "name", sort: true },
@@ -41,6 +42,9 @@ export class FilesComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getAllFiles();
+  }
+  changeView(event: any): void {
+    console.log(this.tov);
   }
   async getAllFiles() {
     this.files_data = [];
@@ -73,14 +77,35 @@ export class FilesComponent implements OnInit {
 
   }
 
+  async download(data: any) {
+    const confirmDownload = confirm("Are you sure you want to download this file?");
+    if (confirmDownload) {
+      this.userService.downloadFile(data).subscribe({
+        next: (res: Blob) => {
+          const url = window.URL.createObjectURL(res);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = data.name; // Use the file name for the download
+          a.click();
+          window.URL.revokeObjectURL(url); // Clean up the object URL
+        },
+        error: (err) => {
+          console.error("Error downloading the file:", err);
+        },
+      });
+    } else {
+      console.log("Download canceled.");
+    }
+  }
 
+   
   async deleteFile(data: any) {
     const datas = {
       name: data.name,
     }
     if (confirm("are you sure you want to delete this?") == true) {
       this.userService.deleteFile(datas).subscribe((res: any) => {
-        console.log(res.data)
+
         alert("File Deleted")
         this.getAllFiles();
       })
@@ -116,7 +141,6 @@ export class FilesComponent implements OnInit {
       day: '2-digit',
       month: 'long',
     });
-    console.log(this.date)
     this.filter();
   }
   filter() {
@@ -138,7 +162,7 @@ export class FilesComponent implements OnInit {
           data.date === this.date
       );
     }
-    
+
   }
   clearDate(): void {
     this.date = null; // Clear the date value

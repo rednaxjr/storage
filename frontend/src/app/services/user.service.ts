@@ -33,6 +33,11 @@ export class UserService {
   deleteFile(data:any){ 
     return this.httpClient.post<any>(this.url + "/deleteFile" , data, this.headers);
   } 
+  downloadFile(data: any) {
+    return this.httpClient.get(this.url + '/downloadFile/' + data.name, {
+      responseType: 'blob', // Ensures the file is downloaded as a binary blob
+    });
+  }
   
   viewFile(data:any){ 
     return this.httpClient.post<any>(this.url + "/viewFile"  , data, {

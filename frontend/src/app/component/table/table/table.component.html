@@ -1,10 +1,10 @@
 <table id="datatable" class="w-full mx-auto table-fixed">
     <tr>
-        <th *ngFor="let label of labels; let i = index"
+        <th *ngFor="let label of labels; let i = index" 
             [ngClass]="{'text-center': label.field === 'action'}"
             class="font-poppins text-xs text-left bg-colorTheme font-medium   px-6 md:py-3  cursor-pointer hover:opacity-80"
             (click)="sort(label,i);">
-            <p class="flex items-center">
+            <p class="flex items-center" >
                 {{ label.text }}
                 <span class="flex">
                     <mat-icon
@@ -40,24 +40,38 @@
                 'text-justify whitespace-normal': item.field === 'date',
                 'whitespace-normal': item.field !== 'action' && item.field !== 'date'
               }">
+             
 
                     <ng-container *ngIf="item.field === 'action'">
                         <ng-container
                             *ngTemplateOutlet="actions; context: { $implicit: label }">
                         </ng-container>
                     </ng-container>
-                    <div class="truncate flex items-center">
-                        
-                    
+                    <div class="truncate flex items-center ">
+                        <div *ngIf="item.text == 'Name'">
+                            <mat-icon *ngIf="label.type == 'pdf'" class="text-red-600">
+                                picture_as_pdf
+                            </mat-icon> 
+                            <mat-icon *ngIf="label.type == 'img'" class="text-blue-600">
+                                image
+                            </mat-icon> 
+                            <mat-icon *ngIf="label.type == 'doc'" class="text-gray-600">
+                                description
+                            </mat-icon> 
+                            
+                        </div>
+                     
+                        <div class="ml-2" *ngIf="item.text != 'Type'">
 
-                        {{label[item.field] === 0 || label[item.field] ===
-                        '0'
-                        ? '0'
-                        : label[item.field] === '' || label[item.field] ===
-                        null
-                        ? '-'
-                        : label[item.field]
-                        }}
+                            {{label[item.field] === 0 || label[item.field] ===
+                            '0'
+                            ? '0'
+                            : label[item.field] === '' || label[item.field] ===
+                            null
+                            ? '-'
+                            : label[item.field]
+                            }}
+                        </div>
                     </div>
                 </td>
             </tr>

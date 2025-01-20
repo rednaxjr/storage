@@ -5,6 +5,8 @@ const multer = require('multer')
 const path = require('path');
 const fs = require('fs');
 const mime = require('mime-types');
+const shared = require('../security/shared') 
+const { Server } = require('socket.io');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './uploaded_files');
@@ -40,7 +42,7 @@ const getAllFiles = (req, res) => {
             const filePath = path.join(folderPath, file);
             const stats = fs.statSync(filePath);
             const mimeType = mime.lookup(file);
-
+            const ftype = shared.detectMimeType(mimeType)
             var d = new Date(stats.mtime);
             time = d.toLocaleString('default', { hour: 'numeric', minute: 'numeric', hour12: true })
             date = d.toLocaleString('default', { year: 'numeric', day: '2-digit', month: 'long' })
@@ -48,7 +50,7 @@ const getAllFiles = (req, res) => {
             return {
                 name: file,
                 size: stats.size,
-                type: mimeType,
+                type: ftype,
                 time: time,
                 date: date,
             };
@@ -59,76 +61,73 @@ const getAllFiles = (req, res) => {
     });
 };
 
-// const uploadFile = async (req, res) => {
-//     // const data = req.body;
-//     // const files =  getAllFiles;
 
-//     // try {
-//         const files = req.files;
-//         const uploadedFiles = files.map(file => ({
-//             filename: file.filename,
-//             originalname: file.originalname,
-//             path: file.path,
-//         }));
-//     //     var getallFiles = `Select * files`
-//     //     for (let i = 0; i < uploadedFiles.length; i++) {
-//     //         var query = `INSERT INTO files (name, original_name, filepath) VALUES (?, ?, ?)`;
-//     //         connection.query(query, [uploadedFiles[i].filename, uploadedFiles[i].originalname, uploadedFiles[i].path], (err, result) => {
-//     //             if (err) {
-//     //                 console.error('Error executing query:', err);
-//     //                 return res.status(500).json({ message: "Something went wrong" });
-//     //             } else {
-//     //                 return res.json({
-//     //                     message: 'Files uploaded successfully',
-//     //                     uploadedFiles,
-//     //                 });
-//     //             }
-//     //         })
-//     //     }
-//     //     //  else {
-//     //     //     var query = `INSERT INTO files (name, original_name, filepath) VALUES (?, ?, ?)`;
-//     //     //     connection.query(query, [uploadedFiles.filename, uploadedFiles.originalname, uploadedFiles.path], (err, result) => {
-//     //     //         if (err) {
-//     //     //             console.error('Error executing query:', err);
-//     //     //             return res.status(500).json({ message: "Something went wrong" });
-//     //     //         } else {
-//     //     //             return res.json({
-//     //     //                 message: 'Files uploaded successfully',
-//     //     //                 uploadedFiles,
-//     //     //             });
-//     //     //         }
-//     //     //     }) 
-//     //     // }
-//     //     console.log('Form Data:', req.body);
+// const downloadFile = async (req, res) => {
+//     console.log("download")
+//     const folderPath = path.join(process.cwd(), 'uploaded_files/');
+//     const data = req.body;
+//     console.log(data)
 
-//     // } catch (error) {
+//     const filePath = path.join(folderPath, data.name);
+//     console.log(filePath)
+//     res.download(filePath, data.name, (err) => {
+//         if (err) {
+//             console.error("Error while downloading file:", err);
+//             return res.status(500).send("Could not download the file.");
+//         }
+//     });
+//     return res.json({
+//         message: 'Files uploaded successfully',
 
+//     });
+// };
+const downloadFile = async (req, res) => { 
+    const folderPath = path.join(process.cwd(), 'uploaded_files'); // Path to uploaded files
+    const fileName = req.params.filename; // Extract filename from URL
+    const file = path.join(folderPath, fileName); // Build full path
 
-//     // if () {
-//     //     res.status(500).json({ message: 'File upload failed', error });
-//     // } else {
-//         return res.json({
-//             message: 'Files uploaded successfully',
-//             uploadedFiles,
-//         });
-//     // }
-//     // console.error('Error during file upload:', error);
-//     // return res.status(500).json({ message: 'File upload failed', error });
-//     // }
-// }
-const uploadFile = async (req, res) => {
-    const files = req.files;
-    const uploadedFiles = files.map(file => ({
-        filename: file.filename,
-        originalname: file.originalname,
-        path: file.path,
-    }));
+    console.log("Downloading file:", file);
 
-    return res.json({
-        message: 'Files uploaded successfully',
-        uploadedFiles,
+    res.download(file, (err) => {
+        if (err) {
+            console.error("Error while downloading file:", err);
+            return res.status(500).send("Could not download the file.");
+        }
+        // Success is implied if there's no error, no need for additional response
     });
-}
+};
+
+// const uploadFile = async (req, res) => {
+//     const files = req.files;
+//     const uploadedFiles = files.map(file => ({
+//         filename: file.filename,
+//         originalname: file.originalname,
+//         path: file.path,
+//     }));
+
+//     return res.json({
+//         message: 'Files uploaded successfully',
+//         uploadedFiles,
+//     });
+// }
+
+const uploadFile = async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    // Emit file upload event to clients
+    req.io.emit('fileUploaded', {
+        fileName: req.file.filename,
+        filePath: `/uploads/${req.file.filename}`,
+    });
+
+    res.status(200).send({
+        message: 'File uploaded successfully.',
+        filePath: `/uploads/${req.file.filename}`,
+    });
+};
+
 const deleteFile = async (req, res) => {
     const data = req.body;
     console.log(data)
@@ -168,10 +167,13 @@ const viewFile = (req, res) => {
 
 };
 
+
+
 module.exports = {
     getAllUsers,
     uploadFile,
     getAllFiles,
     deleteFile,
-    viewFile
+    viewFile,
+    downloadFile
 }
