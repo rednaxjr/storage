@@ -9,9 +9,9 @@ import { HttpHeaders, HttpClient } from "@angular/common/http";
 export class UserService {
 
   // url = environment.url;
-  private url= 'http://localhost:3000/api/user';
+  private url = 'http://localhost:3000/api/user';
   // header = environment.headers;
-  
+
   headers = {
     headers: new HttpHeaders().set('Content-Type', "application/json")
   }
@@ -21,30 +21,35 @@ export class UserService {
 
   getAllUsers() {
     return this.httpClient.get(this.url + "/")
-  } 
+  }
 
-  uploadFile(formData:FormData){ 
-    return this.httpClient.post<any>(this.url + "/uploadFile", formData );
-  } 
-  getUploadedFiles(){ 
-    return this.httpClient.get<any>(this.url + "/getAllFiles" );
-  } 
-  
-  deleteFile(data:any){ 
-    return this.httpClient.post<any>(this.url + "/deleteFile" , data, this.headers);
-  } 
+  uploadFile(formData: FormData) {
+    return this.httpClient.post<any>(this.url + "/uploadFile", formData
+      , {
+        reportProgress: true,
+        observe: 'events',
+      }
+    );
+  }
+  getUploadedFiles() {
+    return this.httpClient.get<any>(this.url + "/getAllFiles");
+  }
+
+  deleteFile(data: any) {
+    return this.httpClient.post<any>(this.url + "/deleteFile", data, this.headers);
+  }
   downloadFile(data: any) {
     return this.httpClient.get(this.url + '/downloadFile/' + data.name, {
       responseType: 'blob', // Ensures the file is downloaded as a binary blob
     });
   }
-  
-  viewFile(data:any){ 
-    return this.httpClient.post<any>(this.url + "/viewFile"  , data, {
+
+  viewFile(data: any) {
+    return this.httpClient.post<any>(this.url + "/viewFile", data, {
       // headers: this.headers,
       headers: new HttpHeaders().set('Content-Type', "application/json"),
-      responseType: 'blob' as 'json'  
+      responseType: 'blob' as 'json'
     });
-  } 
- 
+  }
+
 }

@@ -18,8 +18,26 @@ function detectMimeType(mimeType) {
     return 'unknown';
 }
 
+function formatSpeed(bytesPerSecond) {
+    if (bytesPerSecond > 1024 * 1024) {
+        return `${(bytesPerSecond / (1024 * 1024)).toFixed(2)} MB/s`;
+    } else if (bytesPerSecond > 1024) {
+        return `${(bytesPerSecond / 1024).toFixed(2)} KB/s`;
+    }
+    return `${Math.round(bytesPerSecond)} B/s`;
+}
 
+function formatRemainingTime(speed, remainingBytes) {
+    if (speed === 0) return 'Calculating...';
+    const seconds = remainingBytes / speed;
+    if (seconds < 60) {
+        return `${Math.round(seconds)}s`;
+    }
+    return `${Math.round(seconds / 60)}m ${Math.round(seconds % 60)}s`;
+}
 
 module.exports = {
     detectMimeType,
+    formatSpeed,
+    formatRemainingTime
 }

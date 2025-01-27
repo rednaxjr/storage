@@ -65,6 +65,23 @@
 
         </div>
     </div>
+
+    <!-- <div class="file-upload">
+        asdawdaw
+        <input type="file" (change)="onFileSelected($event)" multiple />
+        <button (click)="uploadFiles()">Upload</button>
+      
+        <div *ngFor="let file of selectedFiles">
+          <p>{{ file.name }}</p>
+          <div class="progress-bar">
+            <div
+              class="progress"
+              [style.width]="uploadProgress[file.name] + '%'"
+            ></div>
+          </div>
+          <span *ngIf="uploadProgress[file.name]">{{ uploadProgress[file.name] }}%</span>
+        </div>
+      </div> -->
     <input type="file" #file2 multiple class="hidden"
         (change)="onFileSelected($event)">
 
@@ -72,6 +89,9 @@
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
     <button mat-button
-        [disabled]="selectedFiles.length == 0 || uploaded == false"
+        
         (click)="uploadFiles()">Upload</button>
+    <!-- <button mat-button
+        [disabled]="selectedFiles.length == 0 || uploaded == false"
+        (click)="uploadFiles()">Upload</button> -->
 </mat-dialog-actions>

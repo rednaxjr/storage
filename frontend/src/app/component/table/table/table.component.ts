@@ -24,7 +24,7 @@ export class TableComponent implements OnInit {
   ) { 
   }
   ngOnInit(): void {
-   console.log(this.data)
+  
   }
   async sort(data: { field: string }, index: number) { 
     const isAscending = (this.labels[index].sort = !this.labels[index].sort); 
