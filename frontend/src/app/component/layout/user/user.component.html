@@ -1,1 +1,61 @@
-<p>user works!</p>
+<mat-sidenav-container class="w-full h-full  "> 
+    <mat-sidenav #drawer [mode]="isSide ? 'over' : 'side'" [opened]="isOpen" class="shadow-md"   [fixedInViewport]="!isSmall"
+      > 
+        <div class="w-full h-18 bg-green-600">
+        </div>
+        <mat-nav-list>
+            <li *ngFor="let i of sideBarRoutes">
+                <a
+                    mat-list-item
+                    [routerLink]="[i.path]">
+                    <mat-icon>
+                        {{i.icon}}
+                    </mat-icon>
+                    {{i.name}}
+                </a>
+            </li>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="fixed overflow-y-hidden">
+        <mat-toolbar class="fixed-header   drop-shadow-md  ">
+            <div class="flex w-full justify-between  items-center ">
+                 
+                    <button
+                        type="button"
+                        aria-label="Toggle sidenav"
+                        mat-icon-button
+                        (click)="drawer.toggle()">
+                        <mat-icon
+                            aria-label="Side nav toggle icon">menu</mat-icon>
+                    </button> 
+                <span class="example-spacer"></span>
+                <div class="flex  justify-between items-center ">
+                    <span>{{user.email}}</span>
+                    <button mat-icon-button
+                        [matMenuTriggerFor]="menu">
+                        <mat-icon
+                            class="material-symbols-outlined"
+                            aria-hidden="false"> account_circle</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                    <mat-icon
+                        class="material-symbols-outlined">person</mat-icon>
+                    <span>Profile</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon class="material-symbols-outlined">
+                        logout
+                    </mat-icon>
+                    <span>logout</span>
+                </button>
+            </mat-menu>
+        </mat-toolbar>
+        <div class="main-content  h-full">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

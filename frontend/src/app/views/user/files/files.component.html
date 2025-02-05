@@ -1,0 +1,107 @@
+<div>
+    <h1>Files</h1>
+
+    <div class="w-full flex justify-between  ">
+        <div class="flex flex-row space-x-3">
+            <div>
+                <p class="italic m-0">Search</p>
+                <input type="text" class="border" (keyup)="search($event)">
+            </div>
+            <div class="filter">
+                <p class="italic m-0">Date</p>
+
+                <div class="filter-button w-full flex items-center space-x-3">
+
+                    <div class="relative  justify-between">
+                        <div class="input-container ">
+                            <input type="date"
+                                [(ngModel)]="date_preview"
+                                class="w-full" (change)="DateFilter($event)">
+                            <div
+                                class="absolute inset-y-0 end-3 flex items-center ps-3.5 pointer-events-none ">
+                                <svg
+                                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <mat-icon class="text-red-600 cursor-pointer"
+                        *ngIf="date != null"
+                        (click)="clearDate();">cancel</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div class="flex  h-auto">
+
+            <button
+                class="flex items-center h-10 justify-center border  px-4 shadow-md bg-green-600 text-white rounded-[8px]"
+                (click)="openModal()">
+                Upload
+            </button>
+        </div>
+    </div>
+
+    <div class="changeView flex w-full justify-end mt-5">
+        <p>
+
+            <mat-button-toggle-group name="tov" [(ngModel)]="tov"
+                aria-label="Font Style"
+                (change)="changeView($event)">
+                <mat-button-toggle value="list">
+                    <mat-icon>list</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="grid">
+                    <mat-icon>grid_view</mat-icon>
+                </mat-button-toggle>
+
+            </mat-button-toggle-group>
+        </p>
+    </div>
+
+    <div class="bg-white w-auto m-auto mt-2 md:lg:xl:px-0 pb-10">
+        <div class="overflow-hidden rounded-5 border border-colorTheme2">
+            <app-table [labels]="table_headers" [data]="files_data" *ngIf="tov == 'list'"
+                class="md:mt-0 lg:mt-0 xl:mt-0">
+                <div
+                    class="grid flex-wrap space-x-1 space-y-1 md:grid sm:flex xl:flex lg:flex justify-start">
+                    <ng-container>
+
+                        <ng-template #actions let-default let-index="index">
+                            <div
+                                class="flex justify-center text-center items-center py-2 space-x-3">
+                                <button
+                                    (click)="view(default);"
+                                    class="flex items-center text-center h-auto font-medium border border-gray-400 text-sm rounded-5 px-2 py-1 bg-white">
+                                    <mat-icon
+                                        [inline]="true">visibility</mat-icon>
+
+                                </button>
+                                <button
+                                    (click)="download(default)"
+                                    class="flex items-center text-center h-auto font-medium border border-gray-400 text-sm rounded-5 px-2 py-1 bg-white">
+                                    <mat-icon [inline]="true">download</mat-icon>
+                                </button>
+                                <button
+                                    (click)="deleteFile(default)"
+                                    class="flex items-center text-center h-auto font-medium border border-gray-400 text-sm rounded-5 px-2 py-1 bg-white">
+                                    <mat-icon [inline]="true">delete</mat-icon>
+                                </button>
+
+                            </div>
+                        </ng-template>
+                    </ng-container>
+
+                </div>
+            </app-table>
+
+        </div>
+    </div>
+    <div class="h-20"></div>
+</div>

@@ -1,0 +1,81 @@
+@media only screen and (max-width: 800px) {
+
+    #datatable table,
+    #datatable thead,
+    #datatable tbody,
+    #datatable .withData,
+    #datatable tr {
+      display: block;
+    }
+  
+    #datatable tr th {
+      display: none;
+      border-top-color: green;
+    }
+  
+    #datatable thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+  
+    #datatable .withData {
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50%;
+      white-space: normal;
+      text-align: left;
+    }
+  
+    #datatable .withData:before {
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-left: 10px;
+      white-space: nowrap;
+      text-align: left;
+      font-weight: bold;
+    }
+  
+    #datatable .withData:before {
+      content: attr(data);
+      text-transform: uppercase;
+    }
+  }
+  
+  /* tr:nth-child(even) {
+    
+    background:  rgba(0, 147, 23 , .1);
+  } */
+  
+  /* top-left border-radius */
+  table tr:first-child th:first-child {
+    border-top-left-radius: 5px !important;
+  }
+  
+  /* top-right border-radius */
+  table tr:first-child th:last-child {
+    border-top-right-radius: 5px !important;
+  }
+  
+  /* bottom-left border-radius */
+  table tr:last-child td:first-child {
+    border-bottom-left-radius: 5px !important;
+  }
+  
+  /* bottom-right border-radius */
+  table tr:last-child td:last-child {
+    border-bottom-right-radius: 5px !important;
+    
+  }
+  table th:last-child{
+    border:none;
+
+  }
+  table th{
+    border-right:1px solid #eee;
+    
+  }

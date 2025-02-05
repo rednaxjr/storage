@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const user = require("./api/user");
-const time_log = require("./api/time_log");
+const user = require("./api/user"); 
 const auth = require("./api/auth")
 const jwt = require('jsonwebtoken');
 
@@ -13,9 +12,7 @@ const authenticateJWT = (req, res, next) => {
 //public 
 router.use('/auth', auth);
 
-router.use('/user', authenticateJWT, user);
-router.use('/time_log', authenticateJWT, time_log); 
-
+router.use('/user', authenticateJWT, user); 
 
 // router.use('/', (req, res) => { res.sendFile('./views/index.html', { root: __dirname }); });
 router.use((req, res) => { res.status(404).sendFile('./views/404.html', { root: __dirname }); });

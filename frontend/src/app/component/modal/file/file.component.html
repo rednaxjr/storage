@@ -1,1 +1,97 @@
-<p>file works!</p>
+<!--- Header -->
+<div
+    class="w-full h-10 bg-green-600 flex justify-between items-center space-x-4 px-8 text-white">
+    <div class="w-full"></div>
+    <div class="w-full flex justify-center text-lg">{{data.title}}</div>
+    <div class="w-full flex justify-end">
+        <button class="flex items-center text-center"
+            (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon aria-label="Close">close</mat-icon>
+        </button>
+    </div>
+</div>
+
+<!--- Body -->
+<mat-dialog-content class="mat-typography h-full bg-gray-100" appDnd
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)">
+    <!-- *ngIf=" selectedFiles.length == 0" -->
+    <div
+        class=" h-auto overflow-auto  w-full uploadImage hover:text-opacity-80  flex justify-center items-center flex-col cursor-pointer bg-white py-5 text-black"
+        (click)="file2.click()">
+        <mat-icon class="text-[200px] overflow-auto h-auto w-auto  " font
+            aria-label="upload">
+            upload
+        </mat-icon>
+        <p>Drag or Drop Files here</p>
+    </div>
+    <div
+        class="h-14 bg-white w-full flex items-center justify-center pb-10 pt-3">
+        <button
+            class="border-2 border-gray-100 bg-green-600 py-3 px-5 rounded-[25px] text-white"
+            (click)="file2.click()">Upload Files</button>
+    </div> 
+    <div class="thumbnail flex flex-col w-full  mt-2 bg-white p-2"
+        *ngFor="let label of selectedFiles; let i = index">
+        <div class="w-full flex space-x-5 relative">
+            <div class="h-[75px] w-[100px] border">
+                <mat-icon aria-label="description"
+                    class="text-red-600 cursor-pointer text-full h-auto w-auto">
+                    description
+                </mat-icon>
+
+            </div>
+            <div class="w-full flex justify-start items-center  ">
+                <p class>
+                    <span class="text-md font-normal"> {{label.name}}
+                    </span><br>
+                    <!-- <li>{{label.type}} </li> -->
+                    <span class="text-xs"> {{ formatBytes(label.size) }} </span>
+                </p>
+            </div>
+            <div class="remove absolute top-0 right-1">
+                <div class="removeFile" class>
+                    <mat-icon aria-label="Close" (click)="deleteFile(i)"
+                        class="text-red-600 cursor-pointer text-lg h-auto w-auto">close</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-row items-center">
+            <div class="progress-cont mt-1 ">
+                <div class="progress" [style.width]="label.progress + '%'">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- <div class="file-upload">
+        asdawdaw
+        <input type="file" (change)="onFileSelected($event)" multiple />
+        <button (click)="uploadFiles()">Upload</button>
+      
+        <div *ngFor="let file of selectedFiles">
+          <p>{{ file.name }}</p>
+          <div class="progress-bar">
+            <div
+              class="progress"
+              [style.width]="uploadProgress[file.name] + '%'"
+            ></div>
+          </div>
+          <span *ngIf="uploadProgress[file.name]">{{ uploadProgress[file.name] }}%</span>
+        </div>
+      </div> -->
+    <input type="file" #file2 multiple class="hidden"
+        (change)="onFileSelected($event)">
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button
+        
+        (click)="uploadFiles()">Upload</button>
+    <!-- <button mat-button
+        [disabled]="selectedFiles.length == 0 || uploaded == false"
+        (click)="uploadFiles()">Upload</button> -->
+</mat-dialog-actions>
