@@ -1,0 +1,28 @@
+ 
+
+.filter {
+  display: flex;
+  height:auto ;
+  width: 100%;
+
+  .filter-button { 
+
+      display: flex;
+      flex-direction: column;
+      margin:5px 25px 5px 25px;
+    
+      &:first-child {
+          margin-left: 0px; /* or any value you want */
+      }
+      label{
+          font-style:italic;
+      }
+      .month-select{
+          border:solid 1px gray;
+      }
+  }
+
+  /* button {
+      margin: 0px 5px 0px 5px;
+  } */
+}
